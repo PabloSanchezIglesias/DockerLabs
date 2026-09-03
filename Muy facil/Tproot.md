@@ -20,7 +20,7 @@ En el primer escaneo vemos que están abiertos el puerto 21 donde corre el servi
 
 <img width="957" height="447" alt="image" src="https://github.com/user-attachments/assets/dcafe9ab-824d-4817-8876-e39c13af139c" />
 
-Después hacemos un escaneo mas robusto centrándonos en el puerto 21 y 80 donde esta corriendo el ftp y el http para poder obtener más información.
+Después hacemos un escaneo más robusto centrándonos en el puerto 21 y 80 donde están corriendo el ftp y el http para poder obtener más información.
 
 ```bash
 sudo nmap -sCV -p21 10.88.0.2 -oN Puertos
@@ -48,7 +48,7 @@ Copie todo el codigo del exploit lo meti en un archivo que le llame exploit.py
 
 <img width="1082" height="969" alt="image" src="https://github.com/user-attachments/assets/5e030d0c-a7d2-41d4-9a87-5cdebdf393b1" />
 
-Lo ejecuté con el parámetro "-h" para ver que parámetros había que pasarle.
+Lo ejecuté con el parámetro `-h` para ver que parámetros había que pasarle.
 
 <img width="636" height="167" alt="image" src="https://github.com/user-attachments/assets/46f324d3-d74c-4c14-8d20-4dfee99a32c6" />
 
