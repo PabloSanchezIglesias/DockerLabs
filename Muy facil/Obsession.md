@@ -109,6 +109,13 @@ El ataque de fuerza bruta fue exitoso y logré obtener una credencial válida pa
 
 <img width="1256" height="187" alt="image" src="https://github.com/user-attachments/assets/632289aa-07e8-4a89-a199-5c7624b19ea0" />
 
+Una vez obtenidas las credenciales válidas (`russoski:llovene`), procedí a probar la conexión hacia el servidor SSH para intentar autenticarme en el sistema. Al introducir la contraseña, el logueo funcionó correctamente y logré obtener una shell interactiva como el usuario `russoski`.
+
+``` bash
+ssh russoski@172.17.0.2
+```
+
+<img width="491" height="288" alt="image" src="https://github.com/user-attachments/assets/49e0b0fa-27cf-4c93-8afc-8917d2df3bae" />
 
 
 
