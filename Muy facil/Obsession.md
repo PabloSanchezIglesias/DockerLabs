@@ -8,6 +8,7 @@ Link: https://dockerlabs.es/
 
 - [Reconocimiento](#reconocimiento)
 - [Explotacion](#explotacion)
+- [Escalada de privilegios](#escalada-de-privilegios)
 
 ## Reconocimiento
 Lo primero que hice nada mas desplegar el laboratorio fue empezar con la fase de reconocimiento utilizando la herramienta nmap.
@@ -115,7 +116,34 @@ Una vez obtenidas las credenciales válidas (`russoski:iloveme`), procedí a pro
 ssh russoski@172.17.0.2
 ```
 
-<img width="491" height="288" alt="image" src="https://github.com/user-attachments/assets/49e0b0fa-27cf-4c93-8afc-8917d2df3bae" />
+<img width="468" height="205" alt="image" src="https://github.com/user-attachments/assets/1985c1ff-8b31-4637-98ec-c5875a566da2" />
+
+## Escalada de Privilegios
+
+Una vez dentro de la máquina con el usuario `russoski`, lo primero que hice fue comprobar mis privilegios en el sistema ejecutando el comando `sudo -l`.
+
+``` bash
+sudo -l
+```
+
+Al revisar el output, observé que el usuario puede ejecutar el binario `/usr/bin/vim` como el usuario `root` sin necesidad de proporcionar contraseña (`NOPASSWD`). 
+
+Para explotar esto y conseguir una shell como administrador, ejecuté el editor de texto con privilegios elevados utilizando `sudo /usr/bin/vim`. Una vez dentro del editor, utilicé la secuencia de escape nativa de vim `:!sh` (o `:!bash`) para invocar una consola del sistema. Al salir del entorno visual, comprobé mi identidad con `whoami` y vi que ya era el usuario `root`.
+
+``` bash
+sudo /usr/bin/vim
+# Dentro de vim introducimos: :!sh
+whoami
+```
+
+Con acceso total al sistema, me dirigí al directorio personal de root `/root` donde listé los archivos disponibles. Encontré el archivo `Video-Nagore-Fernandez.txt` y al visualizar su contenido con `cat` pude recuperar un mensaje de éxito junto con un enlace de YouTube que sirve como flag o recompensa final del laboratorio.
+
+``` bash
+cd /root
+cat Video-Nagore-Fernandez.txt
+```
+
+<img width="846" height="463" alt="image" src="https://github.com/user-attachments/assets/c521f832-680d-4041-8189-055ee13a3203" />
 
 
 
