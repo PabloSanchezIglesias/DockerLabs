@@ -8,7 +8,6 @@ Link: https://dockerlabs.es/
 
 - [Reconocimiento](#reconocimiento)
 - [Explotacion](#explotacion)
-- [Escalada de privilegios](#escalada-de-privilegios)
 
 ## Reconocimiento
 Lo primero que hice nada mas desplegar el laboratorio fue empezar con la fase de reconocimiento utilizando la herramienta nmap.
@@ -47,8 +46,47 @@ Desde la web pudimos revisar la estructura del código en Python enfocado en el 
 
 <img width="1906" height="983" alt="image" src="https://github.com/user-attachments/assets/58db5932-cb26-4001-aca8-e90dbce6a59a" />
 
+Una vez que tenía el script listo en mi máquina local, decidí ejecutarlo pasándole los parámetros correspondientes para validar la existencia de usuarios específicos en el servidor SSH. Para probar suerte, decidí testear en primer lugar si el usuario administrador clásico existía en el sistema.
+
+``` bash
+python3 exploit.py -p 22 172.17.0.2 root
+```
+
+El script funcionó de forma perfecta y nos confirmó de inmediato que el usuario **root** es un usuario completamente válido en el sistema (`[+] root is a valid username`). Ya con un usuario real confirmado en la máquina, tenemos nuestro objetivo claro para intentar ganar acceso.
+
+<img width="262" height="32" alt="image" src="https://github.com/user-attachments/assets/2312202c-c192-42d2-9994-cbf639c73bcf" />
+
+## Explotacion
+
+Al tener confirmado que el usuario `root` existía en el sistema, decidí lanzar un ataque de fuerza bruta contra el servicio SSH utilizando la herramienta `hydra` junto al popular diccionario `rockyou.txt` para intentar dar con la contraseña de acceso.
+
+``` bash
+hydra -l root -P /usr/share/wordlists/rockyou.txt 172.17.0.2 ssh -t 15
+```
+
+El ataque de fuerza bruta funcionó correctamente y logré conseguir una credencial válida para ingresar directamente al sistema con los máximos privilegios:
+
+* **Usuario:** `root`
+* **Contraseña:** `estrella`
+
+<img width="1274" height="185" alt="image" src="https://github.com/user-attachments/assets/914b03f8-efdf-46a8-be38-7307ffcfb74c" />
+
+Para terminar con el laboratorio, procedí a conectarme al servidor SSH utilizando las credenciales obtenidas (`root:estrella`) para verificar el acceso.
+
+``` bash
+ssh root@172.17.0.2
+```
+
+Al introducir la contraseña, logré acceder de forma exitosa obteniendo una shell directa. Una vez dentro de la máquina objetivo, ejecuté los comandos `whoami`, `id` y `hostname` para confirmar mi identidad y privilegios, comprobando que tenemos control total sobre el contenedor como el usuario administrador principal.
+
+``` bash
+whoami
+id
+hostname
+```
+
+<img width="467" height="216" alt="image" src="https://github.com/user-attachments/assets/2798c971-3398-43b5-87d0-dac75b9d80c4" />
 
 
-<img width="1916" height="991" alt="image" src="https://github.com/user-attachments/assets/61e202b3-190a-4fcb-9550-d25c4bbb93ee" />
 
 
